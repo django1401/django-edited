@@ -44,6 +44,8 @@ def course_detail(request, id):
         courses = Course.objects.filter(status=True)
         for cr in courses:
             id_list.append(cr.id)
+
+        id_list.reverse()
         
         if id_list[0] == id :
             next_course = Course.objects.get(id = id_list[1])

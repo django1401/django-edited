@@ -27,34 +27,66 @@
             </p><br>
             <div class="navigation-area">
               <div class="row">
+                {% if next_course and previous_course %}
                 <div class="col-lg-5 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
                   <div class="thumb">
-                    <a href="#"><img class="img-fluid" src="assets/img/blog/prev.jpg" alt=""></a>
+                    <a href={% url 'courses:course_detail' id=previous_course.id %}><img class="img-fluid" src={{previous_course.image.url}} alt=""></a>
                   </div>
                   <div class="arrow">
-                    <a href="#"><span class="lnr text-white lnr-arrow-left"></span></a>
+                    <a href={% url 'courses:course_detail' id=previous_course.id %}><span class="lnr text-white lnr-arrow-left"></span></a>
                   </div>
                   <div class="detials">
-                    <p>Prev Post</p>
-                    <a href="#">
-                      <h4>course title</h4>
+                    <p>Prev Course</p>
+                    <a href={% url 'courses:course_detail' id=previous_course.id %}>
+                      <h4>{{previous_course.title}}</h4>
                     </a>
                   </div>
                 </div>
                 <div class="col-lg-5 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
                   <div class="detials">
                     <p>Next Post</p>
-                    <a href="#">
-                      <h4>course title</h4>
+                    <a href={% url 'courses:course_detail' id=next_course.id %}>
+                      <h4>{{next_course.title}}</h4>
                     </a>
                   </div>
                   <div class="arrow">
-                    <a href="#"><span class="lnr text-white lnr-arrow-right"></span></a>
+                    <a href={% url 'courses:course_detail' id=next_course.id %}><span class="lnr text-white lnr-arrow-right"></span></a>
                   </div>
                   <div class="thumb">
-                    <a href="#"><img class="img-fluid" src="assets/img/blog/next.jpg" alt=""></a>
+                    <a href={% url 'courses:course_detail' id=next_course.id %}><img class="img-fluid" src={{next_course.image.url}} alt=""></a>
                   </div>
                 </div>
+                {% elif next_course %}
+                <div class="col-lg-5 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
+                  <div class="detials">
+                    <p>Next Post</p>
+                    <a href={% url 'courses:course_detail' id=next_course.id %}>
+                      <h4>{{next_course.title}}</h4>
+                    </a>
+                  </div>
+                  <div class="arrow">
+                    <a href={% url 'courses:course_detail' id=next_course.id %}><span class="lnr text-white lnr-arrow-right"></span></a>
+                  </div>
+                  <div class="thumb">
+                    <a href={% url 'courses:course_detail' id=next_course.id %}><img class="img-fluid" src={{next_course.image.url}} alt=""></a>
+                  </div>
+                </div>
+                {% else %}
+                <div class="col-lg-5 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
+                  <div class="thumb">
+                    <a href={% url 'courses:course_detail' id=previous_course.id %}><img class="img-fluid" src={{previous_course.image.url}} alt=""></a>
+                  </div>
+                  <div class="arrow">
+                    <a href={% url 'courses:course_detail' id=previous_course.id %}><span class="lnr text-white lnr-arrow-left"></span></a>
+                  </div>
+                  <div class="detials">
+                    <p>Prev Course</p>
+                    <a href={% url 'courses:course_detail' id=previous_course.id %}>
+                      <h4>{{previous_course.title}}</h4>
+                    </a>
+                  </div>
+                </div>
+                {% endif %}
               </div>
             </div><br>
             <div class="comments-area">
