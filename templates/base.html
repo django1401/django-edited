@@ -136,7 +136,7 @@
                 <p style='color:green'>{{ message}}</p>
               {% endfor %}
             {% endif %}
-            <form action={% url 'root:home' %} method="post">
+            <form  method="post">
               {% csrf_token %}
               <input type="email" name="email">
               <input type="submit" value="Subscribe">
