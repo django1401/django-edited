@@ -1,45 +1,61 @@
 from django.shortcuts import render , get_object_or_404, redirect
-from .models import Course, Comment
+from .models import Course, Comment, Category
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
 from .forms import CommentForm
 from django.contrib import messages
+from root.models import NewsLetter
+from root.forms import NewsLetterForm
 
 def courses(request,cat=None,teacher=None):
-    if cat:
-        course = Course.objects.filter(category__name=cat)
-    elif teacher:
-        course = Course.objects.filter(teacher__info__username=teacher)
+    if request.method == 'GET':
+        category = Category.objects.all()
+        if cat:
+            course = Course.objects.filter(category__name=cat)
+        elif teacher:
+            course = Course.objects.filter(teacher__info__username=teacher) 
 
-    elif request.GET.get('search'):
-        course = Course.objects.filter(content__contains=request.GET.get('search'))
+        elif request.GET.get('search'):
+            course = Course.objects.filter(content__contains=request.GET.get('search')) 
 
-    else:
-        course = Course.objects.filter(status=True)
+        else:
+            course = Course.objects.filter(status=True) 
 
 
-    course = Paginator(course,2)
-    first_page = 1
-    last_page = course.num_pages
-    try:
-        page_number = request.GET.get('page')
-        course = course.get_page(page_number)
+        course = Paginator(course,2)
+        first_page = 1
+        last_page = course.num_pages
+        try:
+            page_number = request.GET.get('page')
+            course = course.get_page(page_number)
+
+        except EmptyPage:
+            course = course.get_page(1) 
+
+        except PageNotAnInteger:
+            course = course.get_page(1) 
+
+
+        context ={"courses": course,
+                  'first_page': first_page,
+                  'last_page': last_page,
+                  'category' : category,
+        }
+        return render(request,'course/courses.html',context=context)
     
-    except EmptyPage:
-        course = course.get_page(1)
-
-    except PageNotAnInteger:
-        course = course.get_page(1)
-
-
-    context ={"courses": course,
-              'first_page': first_page,
-              'last_page': last_page,
-    }
-    return render(request,'course/courses.html',context=context)
+    elif request.method == 'POST':
+        form = NewsLetterForm(request.POST)
+        if form.is_valid():
+            form.save()  
+            messages.add_message(request,messages.SUCCESS,'your email submited')
+            return redirect('courses:courses')   
+        else :
+            messages.add_message(request,messages.ERROR,'Invalid email address')
+            return redirect('courses:courses')
 
 
 def course_detail(request, id):
     if request.method == 'GET':
+        category = Category.objects.all()
         try:
             course = Course.objects.get(id=id)
             comments = Comment.objects.filter(which_course=id, status=True)
@@ -68,13 +84,14 @@ def course_detail(request, id):
             context ={"course": course,
                       'next_course': next_course,
                       'previous_course': previous_course,
-                      'comments': comments
+                      'comments': comments,
+                      'category' : category,
             }
             return render(request,'course/course-details.html',context=context)
         except:
             return render(request,'course/404.html')
         
-    elif request.method == 'POST':
+    elif request.method == 'POST' and len(request.POST) > 2:
         form = CommentForm(request.POST)
         if form.is_valid():
             form.save()
@@ -84,6 +101,18 @@ def course_detail(request, id):
         else:
             messages.add_message(request,messages.ERROR,'yor comment data is not valid')
             return redirect (request.path_info)
+        
+    elif request.method == 'POST' and len(request.POST) == 2:
+        form = NewsLetterForm(request.POST)
+        if form.is_valid():
+            form.save()  
+            messages.add_message(request,messages.SUCCESS,'your email submited')
+            return redirect(request.path_info)   
+        else :
+            messages.add_message(request,messages.ERROR,'Invalid email address')
+            return redirect(request.path_info)
+        
+
 
 def delete_comment(request, id):
     comment = Comment.objects.get(id=id)
