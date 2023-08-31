@@ -45,9 +45,11 @@ def home (request):
 
 def about (request):
     if request.method == 'GET' :
+        trainer = Trainer.objects.filter(status=True)
         category = Category.objects.all()
         context = {
             'category':category,
+            'trainer':trainer,
         }
         return render(request,"root/about.html",context=context)
     elif request.method == 'POST':
@@ -93,8 +95,20 @@ def contact(request):
 
 
 def trainer(request):
-    category = Category.objects.all()
-    context = {
-        'category':category,
-    }
-    return render(request,"root/trainers.html",context=context)
+    if request.method =='GET':
+        category = Category.objects.all()
+        trainer = Trainer.objects.filter(status=True)
+        context = {
+            'category':category,
+            'trainer':trainer,
+        }
+        return render(request,"root/trainers.html",context=context)
+    elif request.method == 'POST':
+        form = NewsLetterForm(request.POST)
+        if form.is_valid():
+            form.save()  
+            messages.add_message(request,messages.SUCCESS,'your email submited')
+            return redirect('root:trainer')   
+        else :
+            messages.add_message(request,messages.ERROR,'Invalid email address')
+            return redirect('root:trainer')
