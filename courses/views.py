@@ -1,7 +1,7 @@
 from django.shortcuts import render , get_object_or_404, redirect
-from .models import Course, Comment, Category
+from .models import Course, Comment, Category, Reply
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
-from .forms import CommentForm
+from .forms import CommentForm, ReplyForm
 from django.contrib import messages
 from root.models import NewsLetter
 from root.forms import NewsLetterForm
@@ -59,6 +59,7 @@ def course_detail(request, id):
         try:
             course = Course.objects.get(id=id)
             comments = Comment.objects.filter(which_course=id, status=True)
+            reply = Reply.objects.filter(status=True)
             id_list = []
             courses = Course.objects.filter(status=True)
             for cr in courses:
@@ -86,6 +87,7 @@ def course_detail(request, id):
                       'previous_course': previous_course,
                       'comments': comments,
                       'category' : category,
+                      'reply' : reply,
             }
             return render(request,'course/course-details.html',context=context)
         except:
@@ -119,4 +121,46 @@ def delete_comment(request, id):
     cid = comment.which_course.id
     comment.delete()
     return redirect (f'/courses/course-detail/{cid}')
+
+
+def edit(request, id):
+    comment = Comment.objects.get(id=id)
+    if request.method == 'GET':
+        
+
+        context = {
+            'comment' : comment,
+        }
+        return render(request,'course/edit.html',context=context)
+    
+    elif request.method == 'POST' :
+        form = CommentForm(request.POST,instance=comment)
+        if form.is_valid():
+            form.save()
+            cid = comment.which_course.id
+            return redirect (f'/courses/course-detail/{cid}')
+        else:
+            messages.add_message(request,messages.ERROR,'chete baba ba in data dadanet .... zereshk')
+            return redirect (request.path_info)
+
+def reply(request, id):
+    comment = Comment.objects.get(id=id)
+    if request.method == 'GET':
+        form = ReplyForm()
+
+        context = {
+            'comment' : comment,
+            'form' : form,
+        }
+        return render(request,'course/reply.html',context=context)
+    
+    elif request.method == 'POST' :
+        form = ReplyForm(request.POST)
+        if form.is_valid():
+            form.save()
+            cid = comment.which_course.id
+            return redirect (f'/courses/course-detail/{cid}')
+        else:
+            messages.add_message(request,messages.ERROR,'chete baba ba in data dadanet .... zereshk')
+            return redirect (request.path_info)
 
