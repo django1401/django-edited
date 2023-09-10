@@ -104,13 +104,17 @@
                       <p class="comment">
                         {{comment.message}}
                       </p>
+                      {% if request.user.is_authenticated and request.user.username == comment.name %}
                       <a type='button' href={% url 'courses:delete' id=comment.id %}>Delete</a>
                       <a type='button' href={% url 'courses:edit' id=comment.id %}>Edit</a>
+                      {% endif %}
                     </div> 
 
                   </div>
                   <div class="reply-btn">
+                    {% if request.user.is_authenticated %}
                     <p><a href={% url 'courses:reply' id=comment.id %} class="btn-reply text-uppercase">reply</a></p>
+                    {% endif %}
                     {% for rp in reply %}
                       {% if rp.which_comment.id == comment.id %}
                           <p>{{rp.name}}:{{rp.message}}</p>
@@ -128,17 +132,18 @@
                   {{message}}
                 {% endfor %}
               {% endif %}
+              {% if request.user.is_authenticated %}
               <form method='post'>
                 {% csrf_token %}
                 <div class="form-group form-inline">
                   <div class="form-group col-lg-6 col-md-12 name">
                     <input type='hidden' name='which_course' value={{course.id}}>
-                    <input type="text" class="form-control" name="name" placeholder="Enter Name"
-                      onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Name'">
+                    <input type="hidden" class="form-control" name="name" placeholder="Enter Name"
+                      onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Name'" value={{request.user.username}}>
                   </div>
                   <div class="form-group col-lg-6 col-md-12 email">
                     <input type="email" class="form-control" name="email" placeholder="Enter email address"
-                      onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter email address'">
+                      onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter email address'" >
                   </div>
                 </div>
                 <div class="form-group">
@@ -151,6 +156,8 @@
                 </div>
                 <button type='submit' class="primary-btn text-uppercase">Post Comment</button>
               </form>
+              {% endif %}
+
             </div>
           </div>
           <div class="col-lg-4">

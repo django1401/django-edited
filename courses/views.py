@@ -5,6 +5,7 @@ from .forms import CommentForm, ReplyForm
 from django.contrib import messages
 from root.models import NewsLetter
 from root.forms import NewsLetterForm
+from django.contrib.auth.decorators import login_required
 
 def courses(request,cat=None,teacher=None):
     if request.method == 'GET':
@@ -115,14 +116,14 @@ def course_detail(request, id):
             return redirect(request.path_info)
         
 
-
+@login_required
 def delete_comment(request, id):
     comment = Comment.objects.get(id=id)
     cid = comment.which_course.id
     comment.delete()
     return redirect (f'/courses/course-detail/{cid}')
 
-
+@login_required
 def edit(request, id):
     comment = Comment.objects.get(id=id)
     if request.method == 'GET':
@@ -142,7 +143,7 @@ def edit(request, id):
         else:
             messages.add_message(request,messages.ERROR,'chete baba ba in data dadanet .... zereshk')
             return redirect (request.path_info)
-
+@login_required
 def reply(request, id):
     comment = Comment.objects.get(id=id)
     if request.method == 'GET':
