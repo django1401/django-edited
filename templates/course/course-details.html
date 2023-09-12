@@ -71,7 +71,7 @@
                     <a href={% url 'courses:course_detail' id=next_course.id %}><img class="img-fluid" src={{next_course.image.url}} alt=""></a>
                   </div>
                 </div>
-                {% else %}
+                {% elif previous_course %}
                 <div class="col-lg-5 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
                   <div class="thumb">
                     <a href={% url 'courses:course_detail' id=previous_course.id %}><img class="img-fluid" src={{previous_course.image.url}} alt=""></a>
