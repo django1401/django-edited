@@ -67,12 +67,15 @@ def course_detail(request, id):
                 id_list.append(cr.id)   
 
             id_list.reverse()
+            if len(id_list) == 1:
+                next_course = None
+                previous_course = None  
 
-            if id_list[0] == id :
+            elif len(id_list) > 1 and id_list[0] == id :
                 next_course = Course.objects.get(id = id_list[1])
                 previous_course = None  
 
-            elif id_list[-1] == id :
+            elif len(id_list) > 1 and  id_list[-1] == id :
                 next_course = None
                 previous_course = Course.objects.get(id = id_list[-2])  
 
