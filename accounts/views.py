@@ -15,12 +15,12 @@ def Login(request):
     elif request.method == 'GET':
         form = AuthenticationForm()
         return render(request,'registration/login.html', context={'form': form})
-    else:
+    elif request.method == 'POST':
         if '@' in request.POST.get('username'):
             username = User.objects.get(email=request.POST.get('username')).username
-        form = AuthenticationForm(request.POST)
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        else:
+            username = request.POST.get('username')
+        password = request.POST.get('password')      
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request,user)
