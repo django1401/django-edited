@@ -17,9 +17,13 @@ def Login(request):
         return render(request,'registration/login.html', context={'form': form})
     elif request.method == 'POST':
         if '@' in request.POST.get('username'):
-            username = User.objects.get(email=request.POST.get('username')).username
+            try:
+                username = User.objects.get(email=request.POST.get('username').strip()).username
+            except:
+                messages.add_message(request, messages.ERROR, 'Invalid username or password')
+                return redirect(request.path_info)
         else:
-            username = request.POST.get('username')
+            username = request.POST.get('username').strip()
         password = request.POST.get('password')      
         user = authenticate(username=username, password=password)
         if user is not None:
