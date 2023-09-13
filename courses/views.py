@@ -9,7 +9,6 @@ from django.contrib.auth.decorators import login_required
 
 def courses(request,cat=None,teacher=None):
     if request.method == 'GET':
-        category = Category.objects.all()
         if cat:
             course = Course.objects.filter(category__name=cat)
         elif teacher:
@@ -39,7 +38,6 @@ def courses(request,cat=None,teacher=None):
         context ={"courses": course,
                   'first_page': first_page,
                   'last_page': last_page,
-                  'category' : category,
         }
         return render(request,'course/courses.html',context=context)
     
@@ -56,7 +54,6 @@ def courses(request,cat=None,teacher=None):
 
 def course_detail(request, id):
     if request.method == 'GET':
-        category = Category.objects.all()
         try:
             course = Course.objects.get(id=id)
             comments = Comment.objects.filter(which_course=id, status=True)
@@ -67,15 +64,12 @@ def course_detail(request, id):
                 id_list.append(cr.id)   
 
             id_list.reverse()
-            if len(id_list) == 1:
-                next_course = None
-                previous_course = None  
 
-            elif len(id_list) > 1 and id_list[0] == id :
+            if id_list[0] == id :
                 next_course = Course.objects.get(id = id_list[1])
                 previous_course = None  
 
-            elif len(id_list) > 1 and  id_list[-1] == id :
+            elif id_list[-1] == id :
                 next_course = None
                 previous_course = Course.objects.get(id = id_list[-2])  
 
@@ -90,7 +84,6 @@ def course_detail(request, id):
                       'next_course': next_course,
                       'previous_course': previous_course,
                       'comments': comments,
-                      'category' : category,
                       'reply' : reply,
             }
             return render(request,'course/course-details.html',context=context)
@@ -103,7 +96,6 @@ def course_detail(request, id):
             form.save()
             messages.add_message(request,messages.SUCCESS,'yor comment submited and publish as soon')
             return redirect (request.path_info)
-
         else:
             messages.add_message(request,messages.ERROR,'yor comment data is not valid')
             return redirect (request.path_info)

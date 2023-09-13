@@ -1,4 +1,5 @@
 {% load static %}
+{% load custom_tags %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -56,6 +57,7 @@
             <li><a href="{% url 'root:contact' %}">Contact</a></li>
             <li class="dropdown"><a href="#"><span>Category</span> <i class="bi bi-chevron-down"></i></a>
               <ul>
+                {% category as category%}
                 {% for cat in category %}
                 <li><a href={% url 'courses:course_cat' cat=cat.name %}>{{cat.name}}</a></li>
                 {% endfor %}
@@ -64,6 +66,7 @@
             </li>
             {% if request.user.is_authenticated %}
             <li>loged as {{request.user.username}}</li>
+            <li><img src={{request.user.image.url}}></li>
             <li><a href={% url 'accounts:logout' %}>Logout</a></li>
             <li><a href={% url 'password_change' %}>change password</a></li>
             {% else %}
@@ -74,7 +77,6 @@
           </ul>
           <i class="bi bi-list mobile-nav-toggle"></i>
         </nav><!-- .navbar -->
-  
       </div>
     </header><!-- End Header -->
 

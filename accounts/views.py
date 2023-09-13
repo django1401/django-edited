@@ -4,7 +4,7 @@ from .forms import CustomUserCreation
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from .models import CustomeUser
 
 
 
@@ -18,7 +18,7 @@ def Login(request):
     elif request.method == 'POST':
         if '@' in request.POST.get('username'):
             try:
-                username = User.objects.get(email=request.POST.get('username').strip()).username
+                username = CustomeUser.objects.get(email=request.POST.get('username').strip()).username
             except:
                 messages.add_message(request, messages.ERROR, 'Invalid username or password')
                 return redirect(request.path_info)
@@ -46,7 +46,7 @@ def signup(request):
         form = CustomUserCreation()
         return render(request,'registration/signup.html', context={'form': form})
     else:
-        form = CustomUserCreation(request.POST)
+        form = CustomUserCreation(request.POST,request.FILES)
         if form.is_valid():
             form.save()
             username = request.POST.get('username')

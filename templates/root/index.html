@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_tags %}
 {% block 'title' %}Home{% endblock 'title' %}
 {% block 'content' %}
 
@@ -44,35 +45,7 @@
     </section><!-- End About Section -->
 
     <!-- ======= Counts Section ======= -->
-    <section id="counts" class="counts section-bg">
-      <div class="container">
-
-        <div class="row counters">
-
-          <div class="col-lg-3 col-6 text-center">
-            <span data-purecounter-start="0" data-purecounter-end={{uc}} data-purecounter-duration="1" class="purecounter"></span>
-            <p>Students</p>
-          </div>
-
-          <div class="col-lg-3 col-6 text-center">
-            <span data-purecounter-start="0" data-purecounter-end={{cc}} data-purecounter-duration="1" class="purecounter"></span>
-            <p>Courses</p>
-          </div>
-
-          <div class="col-lg-3 col-6 text-center">
-            <span data-purecounter-start="0" data-purecounter-end={{sc}} data-purecounter-duration="1" class="purecounter"></span>
-            <p>Services</p>
-          </div>
-
-          <div class="col-lg-3 col-6 text-center">
-            <span data-purecounter-start="0" data-purecounter-end={{tc}} data-purecounter-duration="1" class="purecounter"></span>
-            <p>Trainers</p>
-          </div>
-
-        </div>
-
-      </div>
-    </section><!-- End Counts Section -->
+{% counter %}
 
     <!-- ======= Why Us Section ======= -->
     <section id="why-us" class="why-us">
@@ -94,6 +67,7 @@
           <div class="col-lg-8 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
             <div class="icon-boxes d-flex flex-column justify-content-center">
               <div class="row">
+                {% service as service %}
                 {% for service in service %}
                 <div class="col-xl-4 d-flex align-items-stretch">
                   <div class="icon-box mt-4 mt-xl-0">
@@ -121,6 +95,7 @@
         </div>
 
         <div class="row" data-aos="zoom-in" data-aos-delay="100">
+          {% last_three_course 5 as course %}
         {% for cr in course %}
 
           <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
@@ -164,6 +139,7 @@
        
 
         <div class="row" data-aos="zoom-in" data-aos-delay="100">
+          {% last_three_trainer as trainer %}
           {% for tr in trainer  %}
           <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
             <div class="member">
