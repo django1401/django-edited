@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 {% load custom_tags %}
 {% block 'title' %}course{% endblock 'title' %}
 {% block 'content' %}
@@ -47,11 +48,11 @@
                     <span><a href={% url 'courses:course_teacher' teacher=cr.teacher.info.username %}>{{cr.teacher.info.username}}</a></span>
                   </div>
                   <div class="trainer-rank d-flex align-items-center">
-                    <i class="bx bx-user"></i>&nbsp;{{cr.counted_views}}
+                    <i class="bx bx-user"></i>&nbsp;{{cr.counted_views|ordinal}}
                     &nbsp;&nbsp;
                     <i class="bx bx-heart"></i>&nbsp;{{cr.counted_like}}
                   </div>
-                  <span>{{cr.schedule|date:'M y D'}}</span>
+                  <span>{{cr.schedule|naturaltime}}</span>
                 </div>
               </div>
             </div>
