@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block 'title' %}complate profile{% endblock 'title' %}
+{% block 'content' %}
+<br><br><br><br><br>
+
+<form method='post' enctype="multipart/form-data">
+    {% csrf_token %}
+        <input type='hidden' name='user' value={{request.user.id}}>
+        <input type="text" class="form-control" name="id_code" placeholder="Enter your id"
+          onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter your id'">
+        <input type="text" class="form-control" name="first_name" placeholder="first_name"
+        onfocus="this.placeholder = ''" onblur="this.placeholder = 'first_name'">
+        <input type="text" class="form-control" name="last_name" placeholder="last_name"
+          onfocus="this.placeholder = ''" onblur="this.placeholder = 'last_name'">
+        <input type="text" class="form-control" name="mobile" placeholder="mobile"
+          onfocus="this.placeholder = ''" onblur="this.placeholder = 'mobile'">
+        <input type="text" class="form-control" name="address" placeholder="address"
+          onfocus="this.placeholder = ''" onblur="this.placeholder = 'address'">
+        <input type="file" class="form-control" name="image" placeholder="image"
+          onfocus="this.placeholder = ''" onblur="this.placeholder = 'image'">
+      {% comment %} {{form.as_p}} {% endcomment %}
+    <button type='submit' >Complate Profile</button>
+  </form>
+  <br><br><br><br>
+  {% endblock 'content' %}

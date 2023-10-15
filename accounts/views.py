@@ -1,11 +1,10 @@
 from django.shortcuts import render,redirect
-from django.contrib.auth.forms import AuthenticationForm
 from .forms import CustomUserCreation
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .models import CustomeUser
-from .forms import CaptchaForm
+from .models import CustomeUser, Profile
+from .forms import CaptchaForm, AuthenticationForm, CustomUserProfile
 
 
 
@@ -20,22 +19,15 @@ def Login(request):
     elif request.method == 'POST':
         captcha_form = CaptchaForm(request.POST)
         if captcha_form.is_valid():
-
-            if '@' in request.POST.get('username'):
-                try:
-                    username = CustomeUser.objects.get(email=request.POST.get('username').strip()).username
-                except:
-                    messages.add_message(request, messages.ERROR, 'Invalid username or password')
-                    return redirect(request.path_info)
-            else:
-                username = request.POST.get('username').strip()
+            email = request.POST.get('email')
+            username = request.POST.get('username')
             password = request.POST.get('password')      
-            user = authenticate(username=username, password=password)
+            user = authenticate(email=email, password=password)
             if user is not None:
                 login(request,user)
                 return redirect('/')
             else:
-                messages.add_message(request, messages.ERROR, 'Invalid username or password')
+                messages.add_message(request, messages.ERROR, 'Invalid email or password')
                 return redirect(request.path_info)
         else:
             messages.add_message(request, messages.ERROR, 'Invalid captcha')
@@ -58,25 +50,37 @@ def signup(request):
     else:
         captcha_form = CaptchaForm(request.POST)
         if captcha_form.is_valid():
-            form = CustomUserCreation(request.POST,request.FILES)
+            form = CustomUserCreation(request.POST)
             if form.is_valid():
                 form.save()
-                username = request.POST.get('username')
+                email = request.POST.get('email')
                 password = request.POST.get('password1')
-                user = authenticate(username=username, password=password)
+                user=authenticate(email=email,password=password)
                 if user is not None:
                     login(request,user)
-                    return redirect('/')
+                    return redirect('accounts:complate_profile')
                 else:
-                    messages.add_message(request, messages.ERROR, 'Invalid username or password')
+                    messages.add_message(request, messages.ERROR, 'Invalid email or password')
                     return redirect(request.path_info)
             else:
-                messages.add_message(request, messages.ERROR, 'Invalid username or password')
+                messages.add_message(request, messages.ERROR, 'Invalid email or password')
                 return redirect(request.path_info)
             
         else:
             messages.add_message(request, messages.ERROR, 'Invalid captcha')
             return redirect(request.path_info)
+        
+def complate_profile(request):
+    if request.method == 'GET':
+        #form = CustomUserProfile()
+        return render(request,'registration/profile.html')
+    elif request.method == 'POST':
+        user = Profile.objects.get(user=request.user)
+        print (user, request.POST, request.FILES, sep='\n')
+        form = CustomUserProfile(request.POST,request.FILES,instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
 
         
 
