@@ -1,3 +1,4 @@
+from typing import Any
 from django.shortcuts import render , get_object_or_404, redirect
 from .models import Course, Comment, Category, Reply
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
@@ -6,6 +7,7 @@ from django.contrib import messages
 from root.models import NewsLetter
 from root.forms import NewsLetterForm
 from django.contrib.auth.decorators import login_required
+from django.views.generic.base import TemplateView
 
 def courses(request,cat=None,teacher=None):
     if request.method == 'GET':
@@ -159,4 +161,3 @@ def reply(request, id):
         else:
             messages.add_message(request,messages.ERROR,'chete baba ba in data dadanet .... zereshk')
             return redirect (request.path_info)
-

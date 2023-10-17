@@ -10,7 +10,6 @@ from .models import Profile, CustomeUser
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
-        print (instance)
 
 
 @receiver(post_save, sender=Profile)

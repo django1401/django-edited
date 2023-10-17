@@ -20,7 +20,6 @@ def Login(request):
         captcha_form = CaptchaForm(request.POST)
         if captcha_form.is_valid():
             email = request.POST.get('email')
-            username = request.POST.get('username')
             password = request.POST.get('password')      
             user = authenticate(email=email, password=password)
             if user is not None:

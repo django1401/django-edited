@@ -11,7 +11,7 @@ class CustomUserCreation(UserCreationForm):
 
     class Meta:
         model = CustomeUser
-        fields = ['username','email', 'password1', 'password2']
+        fields = ['email', 'password1', 'password2']
 
 
 class CaptchaForm(forms.Form):
@@ -19,14 +19,6 @@ class CaptchaForm(forms.Form):
 
 
 class AuthenticationForm(forms.Form):
-    """
-    Base class for authenticating users. Extend this to get a form that accepts
-    username/password logins.
-    """
-    username = forms.CharField(
-        label=("Username"),
-        strip=False,
-    )
     email = forms.EmailField()
     password = forms.CharField(
         label=("Password"),
@@ -40,4 +32,4 @@ class CustomUserProfile(forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = ['user', 'id_code', 'first_name', 'last_name','mobile', 'address', 'image']
+        fields = ['user','username', 'id_code', 'first_name', 'last_name','phone', 'address']

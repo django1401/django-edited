@@ -1,3 +1,4 @@
+from typing import Any
 from django.shortcuts import render , redirect
 from .models import Services, NewsLetter
 from courses.models import Course,Trainer
@@ -5,6 +6,7 @@ from courses.models import Category
 from accounts.models import CustomeUser
 from .forms import NewsLetterForm, ContactUsForm
 from django.contrib import messages
+from django.views.generic.base import TemplateView
 
 # Create your views here.
 
@@ -12,7 +14,6 @@ from django.contrib import messages
 
 def home (request):
     if request.method == 'GET':
-
         return render(request,"root/index.html")
     elif request.method == 'POST':
         form = NewsLetterForm(request.POST)
@@ -23,7 +24,8 @@ def home (request):
         else :
             messages.add_message(request,messages.ERROR,'Invalid email address')
             return redirect('root:home')
-        
+
+
 
 def about (request):
     if request.method == 'GET' :
@@ -41,6 +43,11 @@ def about (request):
         else :
             messages.add_message(request,messages.ERROR,'Invalid email address')
             return redirect('root:about')
+
+
+    
+    
+
 
 def contact(request):
     if request.method =='GET':
