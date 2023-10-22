@@ -4,7 +4,7 @@ from .forms import CustomUserCreation
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .models import CustomeUser
+from .models import CustomeUser, Profile
 from .forms import AuthenticationForm, EditProfile
 
 
@@ -59,7 +59,15 @@ def edit_profile(request):
           form = EditProfile()
           return render(request,'registration/edit_profile.html', context={'form': form})
      elif request.method == 'POST':
-          pass
+          profile = Profile.objects.get(user=request.user.id)
+          form = EditProfile(request.POST,instance=profile)
+          if form.is_valid():
+               form.save()
+               return redirect('root:home')
+
+            
+        
+
         
 
 
