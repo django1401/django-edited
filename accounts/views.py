@@ -5,13 +5,14 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import CustomeUser, Profile
 from .forms import CaptchaForm, AuthenticationForm, CustomUserProfile
+from django.views.generic import RedirectView
 
 
 
 
 def Login(request):
     if request.user.is_authenticated:
-        return redirect('/')
+        return redirect('accounts:redirect-home')
     elif request.method == 'GET':
         form = AuthenticationForm()
         captcha = CaptchaForm()
@@ -24,7 +25,7 @@ def Login(request):
             user = authenticate(email=email, password=password)
             if user is not None:
                 login(request,user)
-                return redirect('/')
+                return redirect('accounts:redirect-home')
             else:
                 messages.add_message(request, messages.ERROR, 'Invalid email or password')
                 return redirect(request.path_info)
@@ -36,12 +37,12 @@ def Login(request):
 @login_required
 def Logout(request):
     logout(request)
-    return redirect('/')
+    return redirect('accounts:redirect-home')
 
 
 def signup(request):
     if request.user.is_authenticated:
-        return redirect('/')
+        return redirect('accounts:redirect-home')
     elif request.method == 'GET':
         captcha = CaptchaForm()
         form = CustomUserCreation()
@@ -79,9 +80,11 @@ def complate_profile(request):
         form = CustomUserProfile(request.POST,request.FILES,instance=user)
         if form.is_valid():
             form.save()
-            return redirect('/')
+            return redirect('accounts:redirect-home')
 
-        
+class HomeRedirectView(RedirectView):
+    url = '/'
+    pattern_name = 'root:home'
 
 
 # Create your views here.

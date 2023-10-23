@@ -6,7 +6,7 @@ from courses.models import Category
 from accounts.models import CustomeUser
 from .forms import NewsLetterForm, ContactUsForm
 from django.contrib import messages
-from django.views.generic.base import TemplateView
+from django.views.generic import TemplateView, RedirectView
 
 # Create your views here.
 
@@ -43,8 +43,7 @@ def about (request):
         else :
             messages.add_message(request,messages.ERROR,'Invalid email address')
             return redirect('root:about')
-
-
+    
     
     
 
@@ -94,3 +93,7 @@ def trainer(request):
         else :
             messages.add_message(request,messages.ERROR,'Invalid email address')
             return redirect('root:trainer')
+        
+class CouserRedirectView(RedirectView):
+
+    url = 'https://google.com'

@@ -10,5 +10,6 @@ urlpatterns = [
     path('logout/', Logout, name='logout'),
     path('signup/', signup, name='signup'),
     path('signup/complate-profile', complate_profile, name='complate_profile'),
+    path('redirect-home/', HomeRedirectView.as_view(), name='redirect-home'),
 
 ]
