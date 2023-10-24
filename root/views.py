@@ -5,6 +5,7 @@ from courses.models import Category
 from accounts.models import CustomeUser
 from .forms import NewsLetterForm, ContactUsForm
 from django.contrib import messages
+from django.views.generic import TemplateView, RedirectView
 
 # Create your views here.
 
@@ -23,7 +24,10 @@ def home (request):
         else :
             messages.add_message(request,messages.ERROR,'Invalid email address')
             return redirect('root:home')
-        
+
+
+
+
 
 def about (request):
     if request.method == 'GET' :
