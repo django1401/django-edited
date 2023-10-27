@@ -11,20 +11,23 @@ from django.views.generic import TemplateView, RedirectView
 
 
 
-def home (request):
-    if request.method == 'GET':
+# def home (request):
+#     if request.method == 'GET':
 
-        return render(request,"root/index.html")
-    elif request.method == 'POST':
-        form = NewsLetterForm(request.POST)
-        if form.is_valid():
-            form.save()  
-            messages.add_message(request,messages.SUCCESS,'your email submited')
-            return redirect('root:home')   
-        else :
-            messages.add_message(request,messages.ERROR,'Invalid email address')
-            return redirect('root:home')
+#         return render(request,"root/index.html")
+#     elif request.method == 'POST':
+#         form = NewsLetterForm(request.POST)
+#         if form.is_valid():
+#             form.save()  
+#             messages.add_message(request,messages.SUCCESS,'your email submited')
+#             return redirect('root:home')   
+#         else :
+#             messages.add_message(request,messages.ERROR,'Invalid email address')
+#             return redirect('root:home')
 
+
+class HomeView(TemplateView):
+    template_name = 'root/index.html'
 
 
 

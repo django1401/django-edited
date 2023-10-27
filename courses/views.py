@@ -1,3 +1,4 @@
+from typing import Any
 from django.shortcuts import render , get_object_or_404, redirect
 from .models import Course, Comment, Category, Reply
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
@@ -6,7 +7,7 @@ from django.contrib import messages
 from root.models import NewsLetter
 from root.forms import NewsLetterForm
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 # def courses(request,cat=None,teacher=None):
 #     if request.method == 'GET':
@@ -165,4 +166,54 @@ class CourseListView(ListView):
     
     template_name = 'course/courses.html'
     context_object_name = 'courses'
-    queryset = Course.objects.filter(status=True)
+    paginate_by = 1
+
+    def get_queryset(self):
+        if self.kwargs.get('cat'):
+            return Course.objects.filter(category__name=self.kwargs.get('cat'))
+        elif self.kwargs.get('teacher'):
+            return Course.objects.filter(teacher__info__email = self.kwargs.get('teacher'))
+        elif self.request.GET.get('search'):
+            return Course.objects.filter(content__contains = self.request.GET.get('search'))
+        else:
+            return Course.objects.filter(status=True) 
+    
+
+    
+class CourseDetailView(DetailView):
+    model = Course
+    template_name = 'course/course-details.html'
+    context_object_name = 'course'
+
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context ['comments'] = Comment.objects.filter(which_course=kwargs.get('object').id)
+        context ['reply'] = Reply.objects.filter(status=True)
+        id_list = []
+        courses = Course.objects.filter(status=True)
+        for cr in courses:
+            id_list.append(cr.id)   
+
+        id_list.reverse()
+
+        if id_list[0] == kwargs.get('object').id :
+            next_course = Course.objects.get(id = id_list[1])
+            previous_course = None  
+
+        elif id_list[-1] == kwargs.get('object').id :
+            next_course = None
+            previous_course = Course.objects.get(id = id_list[-2])  
+
+        else:
+            next_course = Course.objects.get(id=id_list[id_list.index(kwargs.get('object').id)+1])
+            previous_course = Course.objects.get(id=id_list[id_list.index(kwargs.get('object').id)-1])  
+        context['next_course'] = next_course
+        context['previous_course'] = previous_course
+        return context
+
+
+
+
+
+
