@@ -2,7 +2,6 @@
     {% csrf_token %}
     {{form.as_p}}
     <button type="submit">Login</button>
-    {{captcha}}
     {% if messages %}
         {% for message in messages %}
             {{message}}
