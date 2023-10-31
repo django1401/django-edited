@@ -218,39 +218,22 @@ class CourseDetailView(DetailView):
     template_name = 'course/course-details.html'
     context_object_name = 'course'
 
-
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        context = super().get_context_data(**kwargs)
-        context ['comments'] = Comment.objects.filter(which_course=kwargs.get('object').id)
-        context ['reply'] = Reply.objects.filter(status=True)
-        id_list = []
-        courses = Course.objects.filter(status=True)
-        for cr in courses:
-            id_list.append(cr.id)   
-
-        id_list.reverse()
-
-        if id_list[0] == kwargs.get('object').id :
-            next_course = Course.objects.get(id = id_list[1])
-            previous_course = None  
-
-        elif id_list[-1] == kwargs.get('object').id :
-            next_course = None
-            previous_course = Course.objects.get(id = id_list[-2])  
-
-        else:
-            next_course = Course.objects.get(id=id_list[id_list.index(kwargs.get('object').id)+1])
-            previous_course = Course.objects.get(id=id_list[id_list.index(kwargs.get('object').id)-1])  
-        context['next_course'] = next_course
-        context['previous_course'] = previous_course
-        context['form'] = CommentForm()
-        return context
     
     def post(self, request, *args, **kwargs):
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect(request.path_info)
+
+        cart = request.session.get('cart')
+        if cart is None:
+           cart = request.session['cart'] = {} 
+
+
+        if cart.get(request.POST.get('pk')) is None:
+            cart[str(request.POST.get('pk'))] = 1
+            request.session.modified = True
+        
+        print (cart)
+   
+
+        return redirect(request.path_info)
         
     
 
