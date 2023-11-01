@@ -220,18 +220,14 @@ class CourseDetailView(DetailView):
 
     
     def post(self, request, *args, **kwargs):
-
         cart = request.session.get('cart')
+
         if cart is None:
            cart = request.session['cart'] = {} 
-
 
         if cart.get(request.POST.get('pk')) is None:
             cart[str(request.POST.get('pk'))] = 1
             request.session.modified = True
-        
-        print (cart)
-   
 
         return redirect(request.path_info)
         
