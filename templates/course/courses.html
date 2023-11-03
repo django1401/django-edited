@@ -39,6 +39,11 @@
                   {% endfor %}
                   <p class="price">${{cr.price}}</p>
                 </div>
+                <form method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="pk" value="{{course.id}}"> 
+                  <button type="submit">Add To Cart</button>
+                </form>
 
                 <h3><a href="{% url 'courses:course_detail' pk=cr.id %}">{{cr.capt}}</a></h3>
                 <p>{{cr.content|truncate2:3}}</p>

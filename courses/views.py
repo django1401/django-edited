@@ -8,8 +8,9 @@ from django.contrib import messages
 from root.models import NewsLetter
 from root.forms import NewsLetterForm
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
+from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from .cart import Cart
 
 # def courses(request,cat=None,teacher=None):
 #     if request.method == 'GET':
@@ -210,6 +211,9 @@ class CourseListView(ListView):
             return Course.objects.filter(content__contains = self.request.GET.get('search'))
         else:
             return Course.objects.filter(status=True) 
+    def post(self, request, *args, **kwargs):
+        post_detail = CourseDetailView()
+        return post_detail.post(request,*args,**kwargs)
     
 
     
@@ -220,19 +224,26 @@ class CourseDetailView(DetailView):
 
     
     def post(self, request, *args, **kwargs):
-        cart = request.session.get('cart')
 
-        if cart is None:
-           cart = request.session['cart'] = {} 
+        cart = Cart(request)
 
-        if cart.get(request.POST.get('pk')) is None:
-            cart[str(request.POST.get('pk'))] = 1
-            request.session.modified = True
+        
+        if 'id' in request.POST :
+            product = get_object_or_404(Course, id=request.POST['id'])    
+            cart.delete_from_cart(product)
+            
+        else:
+
+            product = get_object_or_404(Course, id=request.POST['pk'])
+            cart.add_to_cart_one_quatity(product)
 
         return redirect(request.path_info)
-        
-    
 
+    
+class PaymentView(TemplateView):
+    template_name = 'course/cart.html'
+
+    
 
 
 
