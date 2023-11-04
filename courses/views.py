@@ -235,7 +235,6 @@ class CourseDetailView(DetailView):
             quantity = int(request.POST['quantity'])
             cart.add_to_cart_some_quantity(product, quantity)
             
-        print (request.session['cart'])
         return redirect(request.path_info)
 
     
