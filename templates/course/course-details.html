@@ -160,11 +160,13 @@
               <form method="post">
                 {% csrf_token %}
                 <input type="hidden" name="pk" value="{{course.id}}"> 
+                <input type="text" name="quantity"> 
                 <button type="submit">Add To Cart</button>
               </form>
               <form method="post">
                 {% csrf_token %}
                 <input type="hidden" name="id" value="{{course.id}}"> 
+               
                 <button type="submit">Delete From Cart</button>
               </form>
             </div>
