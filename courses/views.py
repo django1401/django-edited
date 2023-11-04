@@ -224,24 +224,28 @@ class CourseDetailView(DetailView):
 
     
     def post(self, request, *args, **kwargs):
-
         cart = Cart(request)
-
         
         if 'id' in request.POST :
-            product = get_object_or_404(Course, id=request.POST['id'])    
+            product = get_object_or_404(Course, id=int(request.POST['id']))    
             cart.delete_from_cart(product)
             
         else:
-
-            product = get_object_or_404(Course, id=request.POST['pk'])
-            cart.add_to_cart_one_quatity(product)
-
+            product = get_object_or_404(Course, id=int(request.POST['pk']))
+            quantity = int(request.POST['quantity'])
+            cart.add_to_cart_some_quantity(product, quantity)
+            
         return redirect(request.path_info)
 
     
 class PaymentView(TemplateView):
     template_name = 'course/cart.html'
+
+    def post(self, request, *args, **kwargs):
+        cart = Cart(request)
+        cart.clear()
+        return redirect(request.path_info)
+
 
     
 

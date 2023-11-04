@@ -30,7 +30,7 @@ class Cart:
 
         self.save()
 
-    def add_to_cart_one_quatity(self, product):
+    def add_to_cart_one_quantity(self, product):
         """"
         Add a product to the Cart just one quantity
         """
