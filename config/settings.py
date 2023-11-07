@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'robots',
     'captcha',
     'compressor',
+    'order'
 ]
 
 SITE_ID = 3

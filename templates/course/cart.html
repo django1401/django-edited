@@ -12,9 +12,10 @@
 
 {% endfor %}
 <h5><p>--------------------</p></h5>
-<a href="#"> payment and go to paymen site {{ cart.get_total_price_some_quantity }}</a>
+<h3>payment and go to paymen site {{ cart.get_total_price_some_quantity }}</h3>
 <form method="post">
     {% csrf_token %}
     <button type="submit">Clear Cart</button>
 </form>
+<a href={% url "order:order" %} class="btn btn-primary">Submit payment</a>
 {% endblock 'content' %}
