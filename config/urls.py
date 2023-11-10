@@ -36,6 +36,7 @@ urlpatterns = [
     path("accounts/",include("django.contrib.auth.urls")),
     path('robots.txt/', include("robots.urls")),
     path('order/', include("order.urls")),
+    path('payment/', include("payment.urls")),
     path(
     "sitemap.xml/",
     sitemap,

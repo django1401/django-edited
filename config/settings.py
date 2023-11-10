@@ -35,7 +35,8 @@ INSTALLED_APPS = [
     'robots',
     'captcha',
     'compressor',
-    'order'
+    'order',
+    "payment",
 ]
 
 SITE_ID = 3
@@ -128,3 +129,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTH_USER_MODEL = 'accounts.CustomeUser'
+
+SANDBOX = True

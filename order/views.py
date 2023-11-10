@@ -25,5 +25,6 @@ class CreateOrderByView(LoginRequiredMixin, CreateView):
                )
           cart.clear()
           self.request.session['order_id'] = order.id
-          return redirect("/")
+          return redirect("payment:request")
+
 
