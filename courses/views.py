@@ -11,8 +11,6 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .cart import Cart
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
 
 # def courses(request,cat=None,teacher=None):
 #     if request.method == 'GET':
@@ -248,11 +246,6 @@ class PaymentView(TemplateView):
         cart.clear()
         return redirect(request.path_info)
 
-@api_view()
-def api_test(request):
-    return Response({
-        "name": "test"
-    })
 
 
 
