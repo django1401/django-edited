@@ -5,7 +5,7 @@ from .views import *
 app_name = 'api-v1'
 
 urlpatterns = [
-    path("courses/",course_api_view,name='courses'),
-    path("course-detail/<int:pk>",course_api_detail_view,name='course-detail'),
+    path("courses/",CourseListView.as_view(),name='courses'),
+    path("course-detail/<int:pk>/",CourseDetailView.as_view(),name='course-detail'),
 
 ]
