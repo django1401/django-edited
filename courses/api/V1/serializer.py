@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ...models import Course
+from ...models import *
 
 
 # class CourseApiSerializer(serializers.Serializer):
@@ -15,10 +15,14 @@ class CourseSerializer(serializers.ModelSerializer):
         fields = ["id", "title", "price", "content", "category", "teacher", "image"]
 
 
-
-
-class CourseDetailSerializer(serializers.ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Course
-        fields = ["title", "price", "content", "teacher", "category", "status"]
+        model = Category
+        fields = ["id", "name"]
+
+class SkillsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Skills
+        fields = ["id", "name"]
