@@ -1,6 +1,6 @@
 
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, IsAuthenticatedOrReadOnly
 from .serializer import *
 from ...models import *
@@ -167,6 +167,14 @@ class CourseView(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
     queryset = Course.objects.filter(status=True)
 
+    @action(detail=True, methods=['GET'], name='test')
+    def accounts(self,request, pk=None):
+        users = CustomeUser.objects.get(pk=pk)
+        serializers = UserSerializer(users)
+        return Response(serializers.data)
+
+
+
 class CategoryView(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
@@ -175,3 +183,8 @@ class CategoryView(viewsets.ModelViewSet):
 class SkillsView(viewsets.ModelViewSet):
     serializer_class = SkillsSerializer
     queryset = Skills.objects.all()
+
+
+class UsersView(viewsets.ModelViewSet):
+    serializer_class = UserSerializer
+    queryset = CustomeUser.objects.all()

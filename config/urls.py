@@ -20,6 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
 from root.sitemap import StaticSiteMap, DynamicSiteMap
+from rest_framework.documentation import include_docs_urls
 
 
 sitemaps = {
@@ -45,6 +46,8 @@ urlpatterns = [
 ),
     path('captcha/', include('captcha.urls')),
     path('api-auth/', include('rest_framework.urls')),
+    path('api-docs/', include_docs_urls(title ='rest_api_document')),
+    
     
 ]
 
