@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, ListCreateAPIView, UpdateAPIView, DestroyAPIView, RetrieveAPIView
 from rest_framework.mixins import CreateModelMixin, DestroyModelMixin, ListModelMixin, RetrieveModelMixin, UpdateModelMixin
 from rest_framework import viewsets
+from .permission import IsAdminOrReadOnly
 
 
 
@@ -166,6 +167,7 @@ from rest_framework import viewsets
 class CourseView(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
     queryset = Course.objects.filter(status=True)
+    permission_classes = [IsAdminOrReadOnly]
 
     @action(detail=True, methods=['GET'], name='test')
     def accounts(self,request, pk=None):

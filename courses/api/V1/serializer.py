@@ -29,6 +29,10 @@ class CourseSerializer(serializers.ModelSerializer):
         rep = super().to_representation(instance)
         rep['teacher'] = TrainerSerializer(instance.teacher).data
         rep['category'] = CategorySerializer(instance.category, many=True).data
+        request = self.context.get('request')
+        kwargs = request.parser_context.get('kwargs')
+        if kwargs.get('pk') is not None:
+            rep.pop('content')
         return rep
     
     def create(self, validated_data):
