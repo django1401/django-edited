@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'order',
     "payment",
     "rest_framework",
+    'django_filters',
 ]
 
 SITE_ID = 3
