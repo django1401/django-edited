@@ -17,6 +17,7 @@ from .paginator import CustomePaginate
 
 
 
+
 # @api_view(["GET", "POST"])
 # @permission_classes([IsAdminUser])
 # def course_api_view(request):
@@ -187,6 +188,7 @@ class CourseView(viewsets.ModelViewSet):
 
 
 class CategoryView(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticatedOrReadOnly]
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
 
