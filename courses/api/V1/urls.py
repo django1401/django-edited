@@ -9,7 +9,7 @@ router = DefaultRouter()
 router.register('courses', CourseView, basename='courses')
 router.register('category', CategoryView, basename='category')
 router.register('skills', CategoryView, basename='skills')
-router.register('accounts', UsersView, basename='users')
+router.register('trainer', TrainerView, basename='trainer')
 urlpatterns = router.urls
 
 

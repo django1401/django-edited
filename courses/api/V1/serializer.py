@@ -58,21 +58,9 @@ class SkillsSerializer(serializers.ModelSerializer):
         fields = ["id", "name"]
 
 
-class UserSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = CustomeUser
-        fields = ["id", "email"]
 
 class TrainerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Trainer
         fields = '__all__'
-
-
-    def to_representation(self, instance):
-        rep = super().to_representation(instance)
-        rep['info'] = UserSerializer(instance.info).data
-        return rep
-    

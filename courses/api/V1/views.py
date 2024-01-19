@@ -179,13 +179,6 @@ class CourseView(viewsets.ModelViewSet):
     pagination_class = CustomePaginate
 
 
-    @action(detail=True, methods=['GET'], name='test')
-    def accounts(self,request, pk=None):
-        users = CustomeUser.objects.get(pk=pk)
-        serializers = UserSerializer(users)
-        return Response(serializers.data)
-
-
 
 class CategoryView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -198,6 +191,7 @@ class SkillsView(viewsets.ModelViewSet):
     queryset = Skills.objects.all()
 
 
-class UsersView(viewsets.ModelViewSet):
-    serializer_class = UserSerializer
-    queryset = CustomeUser.objects.all()
+class TrainerView(viewsets.ModelViewSet):
+    serializer_class = TrainerSerializer
+    queryset = Trainer.objects.filter(status=True)
+
