@@ -6,7 +6,9 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-# from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.views import TokenObtainPairView
+#===========================
+from django.shortcuts import get_object_or_404
 
 
 class RegistrationView(GenericAPIView):
@@ -50,8 +52,8 @@ class DestroyAuthToken(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 
-# class Customejwtview(TokenObtainPairView):
-#     serializer_class = CustomObtainPairSerializer
+class Customejwtview(TokenObtainPairView):
+    serializer_class = CustomObtainPairSerializer
     
 
 class ChangePasswordView(GenericAPIView):

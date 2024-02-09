@@ -1,11 +1,11 @@
-from ...models import CustomeUser
+from ...models import CustomeUser, Profile
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
 from django.core import exceptions
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
-# from rest_framework.simplejwt.serializer import TokenObtainPairSerializer
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
 
@@ -81,13 +81,13 @@ class CustomeAuthTokenSerializer(serializers.Serializer):
             return attrs
         
 
-# class CustomObtainPairSerializer(TokenObtainPairSerializer):
+class CustomObtainPairSerializer(TokenObtainPairSerializer):
 
-#     def validate(self,attrs):
-#         validated_data = super().validate(attrs)
-#         validated_data['id'] = self.user.id
-#         validated_data['email'] = self.user.email
-#         return validated_data
+    def validate(self,attrs):
+        validated_data = super().validate(attrs)
+        validated_data['id'] = self.user.id
+        validated_data['email'] = self.user.email
+        return validated_data
         
 
 
@@ -156,10 +156,9 @@ class PasswordChangeSerializer(serializers.Serializer):
               Token.objects.create(user=user)
          token = Token.objects.get(user=user)
          return  token
-              
 
 
-         
+
 
 
 
