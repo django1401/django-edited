@@ -74,6 +74,10 @@ class CustomeAuthTokenSerializer(serializers.Serializer):
                 if not user:
                     msg = ('Unable to log in with provided credentials.')
                     raise serializers.ValidationError(msg, code='authorization')
+                if not user.is_verified:
+                    msg = ('your account is not verified !...')
+                    raise serializers.ValidationError(msg, code='authorization')
+                     
             else:
                 msg = ('Must include "email" and "password".')
                 raise serializers.ValidationError(msg, code='authorization')
@@ -85,6 +89,9 @@ class CustomObtainPairSerializer(TokenObtainPairSerializer):
 
     def validate(self,attrs):
         validated_data = super().validate(attrs)
+        if not self.user.is_verified:
+            msg = ('your account is not verified !...')
+            raise serializers.ValidationError(msg, code='authorization')
         validated_data['id'] = self.user.id
         validated_data['email'] = self.user.email
         return validated_data
@@ -156,6 +163,14 @@ class PasswordChangeSerializer(serializers.Serializer):
               Token.objects.create(user=user)
          token = Token.objects.get(user=user)
          return  token
+    
+from ...models import Profile
+class ProfileSerializer(serializers.ModelSerializer):
+     email = serializers.CharField(max_length=100, source='user.email', read_only=True)
+     
+     class Meta:
+          model = Profile
+          fields = ['id', 'first_name', 'last_name', 'image', 'email']
 
 
 
