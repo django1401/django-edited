@@ -1,19 +1,19 @@
 
-from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes, action
-from rest_framework.permissions import IsAdminUser, IsAuthenticated, IsAuthenticatedOrReadOnly
-from .serializer import *
-from ...models import *
-from django.shortcuts import get_object_or_404
-from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView, ListCreateAPIView, UpdateAPIView, DestroyAPIView, RetrieveAPIView
-from rest_framework.mixins import CreateModelMixin, DestroyModelMixin, ListModelMixin, RetrieveModelMixin, UpdateModelMixin
-from rest_framework import viewsets
-from .permission import IsAdminOrReadOnly
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter, OrderingFilter
-from .paginator import CustomePaginate
+# from rest_framework.response import Response
+# from rest_framework.decorators import api_view, permission_classes, action
+# from rest_framework.permissions import IsAdminUser, IsAuthenticated, IsAuthenticatedOrReadOnly
+# from .serializer import *
+# from ...models import *
+# from django.shortcuts import get_object_or_404
+# from rest_framework import status
+# from rest_framework.views import APIView
+# from rest_framework.generics import ListAPIView, ListCreateAPIView, UpdateAPIView, DestroyAPIView, RetrieveAPIView
+# from rest_framework.mixins import CreateModelMixin, DestroyModelMixin, ListModelMixin, RetrieveModelMixin, UpdateModelMixin
+# from rest_framework import viewsets
+# from .permission import IsAdminOrReadOnly
+# from django_filters.rest_framework import DjangoFilterBackend
+# from rest_framework.filters import SearchFilter, OrderingFilter
+# from .paginator import CustomePaginate
 
 
 
@@ -168,30 +168,30 @@ from .paginator import CustomePaginate
 #         course_serializer.save()
 #         return Response(course_serializer.data)
 
-class CourseView(viewsets.ModelViewSet):
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    serializer_class = CourseSerializer
-    queryset = Course.objects.filter(status=True)
-    permission_classes = [IsAdminOrReadOnly]
-    filterset_fields = ['category', 'title']
-    search_fields = ['content', 'category__name', 'teacher__info__email']
-    ordering_fields = ['created_date']
-    pagination_class = CustomePaginate
+# class CourseView(viewsets.ModelViewSet):
+#     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+#     serializer_class = CourseSerializer
+#     queryset = Course.objects.filter(status=True)
+#     permission_classes = [IsAdminOrReadOnly]
+#     filterset_fields = ['category', 'title']
+#     search_fields = ['content', 'category__name', 'teacher__info__email']
+#     ordering_fields = ['created_date']
+#     pagination_class = CustomePaginate
 
 
 
-class CategoryView(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
-    serializer_class = CategorySerializer
-    queryset = Category.objects.all()
+# class CategoryView(viewsets.ModelViewSet):
+#     permission_classes = [IsAuthenticated]
+#     serializer_class = CategorySerializer
+#     queryset = Category.objects.all()
 
 
-class SkillsView(viewsets.ModelViewSet):
-    serializer_class = SkillsSerializer
-    queryset = Skills.objects.all()
+# class SkillsView(viewsets.ModelViewSet):
+#     serializer_class = SkillsSerializer
+#     queryset = Skills.objects.all()
 
 
-class TrainerView(viewsets.ModelViewSet):
-    serializer_class = TrainerSerializer
-    queryset = Trainer.objects.filter(status=True)
+# class TrainerView(viewsets.ModelViewSet):
+#     serializer_class = TrainerSerializer
+#     queryset = Trainer.objects.filter(status=True)
 
