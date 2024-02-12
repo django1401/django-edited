@@ -1,5 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm
-from .models import CustomeUser
+from ..models import CustomeUser
 
 class CustomUserCreation(UserCreationForm):
     class Meta:

@@ -1,10 +1,10 @@
 from ..serializer import CourseSerializer
 from ....models import Course
 from rest_framework import viewsets
-from .permission import IsAdminOrReadOnly
+from ..permission import IsAdminOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
-from .paginator import CustomePaginate
+from ..paginator import CustomePaginate
 
 
 class CourseView(viewsets.ModelViewSet):
