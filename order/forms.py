@@ -1,8 +1,8 @@
-from django import forms
-from .models import OrderBy, OrderItem
+# from django import forms
+# from .models import OrderBy, OrderItem
 
-class OrderByFrom(forms.ModelForm):
+# class OrderByFrom(forms.ModelForm):
 
-    class Meta:
-        model = OrderBy
-        fields = ['first_name', 'last_name', 'email', 'phone', 'address']
+#     class Meta:
+#         model = OrderBy
+#         fields = ['first_name', 'last_name', 'email', 'phone', 'address']
