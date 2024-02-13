@@ -1,9 +1,10 @@
 {% extends "mail_templated/base.tpl" %}
 
 {% block subject %}
-Hello 
+Hello {{user}}
 {% endblock %}
 
 {% block html %}
 This is an <strong>html</strong> message.
+<a href="https://google.com/">google.com</a>
 {% endblock %}

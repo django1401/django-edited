@@ -97,8 +97,7 @@ class ProfileView(GenericAPIView):
 class VerificationView(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
-        message=EmailMessage('email/email.html', "admin@test.ir",to=["test@test.com"])
-        # message.send()
+        message = EmailMessage('email/email.html', {'user': 'hamid'}, 'admin@hamid.com', to=["test@test.com"])
         email = SendEmailWithThreading(message)
         email.start()
         return Response({"detail" : "email sent for your verification...!"})
