@@ -8,6 +8,9 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.shortcuts import get_object_or_404
+from .multi_threading import SendEmailWithThreading
+from mail_templated import EmailMessage
+
 
 
 class RegistrationView(GenericAPIView):
@@ -89,3 +92,13 @@ class ProfileView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(data=serializer.data, status=status.HTTP_200_OK)
+    
+
+class VerificationView(GenericAPIView):
+
+    def get(self, request, *args, **kwargs):
+        message=EmailMessage('email/email.html', "admin@test.ir",to=["test@test.com"])
+        # message.send()
+        email = SendEmailWithThreading(message)
+        email.start()
+        return Response({"detail" : "email sent for your verification...!"})

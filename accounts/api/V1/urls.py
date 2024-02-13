@@ -16,6 +16,7 @@ urlpatterns = [
     path('token/logout/', DestroyAuthToken.as_view(), name = 'logout'),
     path('change-password/', ChangePasswordView.as_view(), name = 'change-password'),
     path('profile/', ProfileView.as_view(), name = 'profile'),
+    path('verification/', VerificationView.as_view(), name = 'verification'),
 
 
     #jwt token
