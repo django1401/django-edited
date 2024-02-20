@@ -6,6 +6,7 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.shortcuts import get_object_or_404
 
 
 
@@ -171,6 +172,19 @@ class ProfileSerializer(serializers.ModelSerializer):
      class Meta:
           model = Profile
           fields = ['id', 'first_name', 'last_name', 'image', 'email']
+
+
+
+class ResendEmailSerializer(serializers.Serializer):
+    email = serializers.CharField(
+        label=("Email"),
+        write_only=True
+    )
+
+    def validate(self, attrs):
+        user = get_object_or_404(CustomeUser, email = attrs.get('email'))
+        attrs['user'] = user
+        return attrs
 
 
 

@@ -16,7 +16,9 @@ urlpatterns = [
     path('token/logout/', DestroyAuthToken.as_view(), name = 'logout'),
     path('change-password/', ChangePasswordView.as_view(), name = 'change-password'),
     path('profile/', ProfileView.as_view(), name = 'profile'),
-    path('verification/', VerificationView.as_view(), name = 'verification'),
+    # path('verification/', VerificationView.as_view(), name = 'verification'),
+    path('is-verified/<str:token>', IsVerifiedView.as_view(), name = 'is-verification'),
+    path('resend/', ResendEmailView.as_view(), name = 'resend'),
 
 
     #jwt token
