@@ -14,35 +14,44 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.tokens import AccessToken
 
 
-
 class RegistrationView(GenericAPIView):
-    
+    """
+    this class is for create user
+    """
+
     serializer_class = RegisterationSerializer
-    
+
     def post(self, request, *args, **kwargs):
 
         serializer = RegisterationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            user = get_object_or_404(CustomeUser, email = serializer.validated_data['email'])
+            user = get_object_or_404(
+                CustomeUser, email=serializer.validated_data["email"]
+            )
             token = self.get_tokens_for_user(user)
-            message = EmailMessage('email/email.html', {"token":token}, 'admin@hamid.com', to=[serializer.validated_data['email']])
+            message = EmailMessage(
+                "email/email.html",
+                {"token": token},
+                "admin@hamid.com",
+                to=[serializer.validated_data["email"]],
+            )
             email = SendEmailWithThreading(message)
             email.start()
-            return Response({"detail" : "email sent for your verification...!"})
-            
+            return Response({"detail": "email sent for your verification...!"})
+
             # print (serializer.validated_data)
             # data = {
             #     'email': serializer.validated_data['email']
             # }
             # return Response(data, status = status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     def get_tokens_for_user(self, user):
 
         refresh = RefreshToken.for_user(user)
         return str(refresh.access_token)
-    
+
 
 class CustomeObtainAuthToken(ObtainAuthToken):
     serializer_class = CustomeAuthTokenSerializer
@@ -51,26 +60,23 @@ class CustomeObtainAuthToken(ObtainAuthToken):
 
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
+        user = serializer.validated_data["user"]
         token, created = Token.objects.get_or_create(user=user)
-        return Response({
-            'token': token.key,
-            'user_id': user.pk,
-            'email': user.email
-        })
-    
+        return Response({"token": token.key, "user_id": user.pk, "email": user.email})
+
+
 class DestroyAuthToken(APIView):
 
     permission_classes = [IsAuthenticated]
-    
+
     def post(self, request, *args, **kwargs):
         request.user.auth_token.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
+
 
 class Customejwtview(TokenObtainPairView):
     serializer_class = CustomObtainPairSerializer
-    
+
 
 class ChangePasswordView(GenericAPIView):
 
@@ -84,8 +90,11 @@ class ChangePasswordView(GenericAPIView):
         serializer.set_new_password(request, serializer.validated_data)
         token = serializer.create_new_token(request, serializer.validated_data)
 
-        return Response(data= {'detail':'password change successfully.', 'token':token.key}, status=status.HTTP_200_OK)
-    
+        return Response(
+            data={"detail": "password change successfully.", "token": token.key},
+            status=status.HTTP_200_OK,
+        )
+
 
 class ProfileView(GenericAPIView):
     permission_classes = [IsAuthenticated]
@@ -97,7 +106,6 @@ class ProfileView(GenericAPIView):
         profile = get_object_or_404(Profile, user=user)
         serializer = self.serializer_class(profile)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
-    
 
     def put(self, request, *args, **kwargs):
         user = request.user
@@ -106,7 +114,7 @@ class ProfileView(GenericAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(data=serializer.data, status=status.HTTP_200_OK)
-    
+
 
 # class VerificationView(GenericAPIView):
 
@@ -117,33 +125,31 @@ class ProfileView(GenericAPIView):
 #         email = SendEmailWithThreading(message)
 #         email.start()
 #         return Response({"detail" : "email sent for your verification...!"})
-    
-
 
 
 #     def get_tokens_for_user(self, user):
 
 #         refresh = RefreshToken.for_user(user)
 #         return str(refresh.access_token)
-    
+
 
 class IsVerifiedView(GenericAPIView):
     def get(self, request, *args, **kwargs):
         try:
-            user_data = AccessToken(kwargs.get('token'))
-            user_id = user_data['user_id']
+            user_data = AccessToken(kwargs.get("token"))
+            user_id = user_data["user_id"]
             user = get_object_or_404(CustomeUser, id=user_id)
             user.is_verified = True
             user.save()
-            return Response({
-                "detail" : "your account verified successfully"
-            })
+            return Response({"detail": "your account verified successfully"})
         except:
-            return Response({
-                "detail" : "your token may be expired or changed structure...",
-                "resend email" : "http://127.0.0.1:8080/accounts/api/V1/resend"
-            })
-        
+            return Response(
+                {
+                    "detail": "your token may be expired or changed structure...",
+                    "resend email": "http://127.0.0.1:8080/accounts/api/V1/resend",
+                }
+            )
+
 
 class ResendEmailView(GenericAPIView):
     serializer_class = ResendEmailSerializer
@@ -151,20 +157,21 @@ class ResendEmailView(GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
+        user = serializer.validated_data["user"]
         if user.is_verified:
-            return Response({"detail" : "your email is already verified"})
+            return Response({"detail": "your email is already verified"})
         token = self.get_tokens_for_user(user)
-        message = EmailMessage('email/email.html', {"token":token}, 'admin@hamid.com', to=[serializer.validated_data['email']])
+        message = EmailMessage(
+            "email/email.html",
+            {"token": token},
+            "admin@hamid.com",
+            to=[serializer.validated_data["email"]],
+        )
         email = SendEmailWithThreading(message)
         email.start()
-        return Response({"detail" : "email Resend for you..."})
-
-
-
+        return Response({"detail": "email Resend for you..."})
 
     def get_tokens_for_user(self, user):
 
         refresh = RefreshToken.for_user(user)
         return str(refresh.access_token)
-

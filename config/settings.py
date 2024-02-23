@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'order',
     "payment",
     "rest_framework",
+    'djoser',
     'django_filters',
     'drf_yasg',
     'rest_framework.authtoken',
