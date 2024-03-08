@@ -14,13 +14,13 @@ DATABASES = {
 }
 
 
-STATIC_ROOT = BASE_DIR.joinpath('/static')
+STATIC_ROOT = BASE_DIR.joinpath('static/')
 MEDIA_ROOT = BASE_DIR.joinpath('media/')
 
-STATICFILES_DIRS = [
-    BASE_DIR/'static',
-    BASE_DIR/'media',
-]
+# STATICFILES_DIRS = [
+#     BASE_DIR/'static',
+#     BASE_DIR/'media',
+# ]
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
