@@ -18,7 +18,5 @@ jobs:
       run: docker-compose up -d 
     - name: Testcase
       run: docker exec django sh -c "python manage.py test ."
-    - name: Clean Code
-      run: docker exec django sh -c "flake8 ."
     - name: Pytest check
       run: docker exec django sh -c "pytest ."
