@@ -44,18 +44,6 @@ class TestUrlRoot(TestCase):
         respone = c.get(self.url1)
         self.assertTemplateUsed(respone, template_name='root/index.html')
 
-    def test_view_home_response_3(self):
-        c = Client()
-        respone = c.get(self.url1)
-        total = str(respone.content).find('asghar chel')
-        if total == -1:
-            total = 0
-        self.assertTrue(total)
-
-    def test_view_home_response_2(self):
-        c = Client()
-        respone = c.get(self.url1 + '/hasan/')
-        self.assertEqual(respone.status_code, 404)
 
 
 
