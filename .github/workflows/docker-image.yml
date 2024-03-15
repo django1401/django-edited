@@ -19,4 +19,4 @@ jobs:
     - name: Testcase
       run: docker exec django sh -c "python manage.py test ."
     - name: Pytest check
-      run: docker exec django sh -c "pytest ."
+      run: docker exec django sh -c "pytest ./courses/api/V1/tests.py"
