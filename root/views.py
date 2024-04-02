@@ -29,6 +29,9 @@ from django.views.generic import TemplateView, RedirectView
 class HomeView(TemplateView):
     template_name = 'root/index.html'
 
+class HomeView2(TemplateView):
+    template_name = 'root/index2.html'
+
 
 
 
