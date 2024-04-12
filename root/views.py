@@ -33,10 +33,11 @@ class HomeView2(TemplateView):
     template_name = 'root/index2.html'
 
 
-
+from .tasks import test, test2
 
 def about (request):
     if request.method == 'GET' :
+        test.delay()
         trainer = Trainer.objects.filter(status=True)
         context = {
             'trainer':trainer,

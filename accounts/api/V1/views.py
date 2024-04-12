@@ -12,7 +12,7 @@ from .multi_threading import SendEmailWithThreading
 from mail_templated import EmailMessage
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.tokens import AccessToken
-
+from .tasks import send_email_with_celery
 
 class RegistrationView(GenericAPIView):
     """
@@ -30,15 +30,12 @@ class RegistrationView(GenericAPIView):
                 CustomeUser, email=serializer.validated_data["email"]
             )
             token = self.get_tokens_for_user(user)
-            message = EmailMessage(
-                "email/email.html",
-                {"token": token},
-                "admin@hamid.com",
-                to=[serializer.validated_data["email"]],
-            )
-            email = SendEmailWithThreading(message)
-            email.start()
-            return Response({"detail": "email sent for your verification...!"})
+            send_email_with_celery.delay("email/email.html", token, "admin@hamid.com", [user.email])
+            
+            
+            
+
+            return Response({"detail": "if email is on our database email sent for your verification...!"})
 
             # print (serializer.validated_data)
             # data = {
