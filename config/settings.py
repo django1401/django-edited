@@ -190,3 +190,12 @@ EMAIL_HOST_PASSWORD = ""
 
 
 CELERY_BROKER_URL = "redis://redis:6379/1"
+CELERY_RESAULT_BACKEND = "db+sqlite:///results.sqlite"
+
+CELERY_BEAT_SCHEDULE = {
+    "clean_unverified_users" : {
+        "task" : "root.tasks.clean_unverified_users", 
+        "schedule" : 10.0,
+    }
+
+}
