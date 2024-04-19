@@ -14,6 +14,4 @@ from accounts.models import CustomeUser
 @shared_task
 def clean_unverified_users():
     users = CustomeUser.objects.filter(is_verified=False)
-    print ("teeeeeeeeeeest")
     users.delete()
-    print ("teeeeeeeeeeest")

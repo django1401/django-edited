@@ -6,7 +6,8 @@ from accounts.models import CustomeUser
 from .forms import NewsLetterForm, ContactUsForm
 from django.contrib import messages
 from django.views.generic import TemplateView, RedirectView
-
+from django.core.cache import cache
+from django.views.decorators.cache import cache_page
 # Create your views here.
 
 
@@ -24,6 +25,14 @@ from django.views.generic import TemplateView, RedirectView
 #         else :
 #             messages.add_message(request,messages.ERROR,'Invalid email address')
 #             return redirect('root:home')
+
+
+
+
+
+
+
+
 
 
 class HomeView(TemplateView):
@@ -84,9 +93,11 @@ def contact(request):
 
 def trainer(request):
     if request.method =='GET':
-        trainer = Trainer.objects.filter(status=True)
+        if cache.get('trainer') is None:
+            trainer = Trainer.objects.all()
+            cache.set('trainer',trainer)
         context = {
-            'trainer':trainer,
+            'trainer':cache.get('trainer'),
         }
         return render(request,"root/trainers.html",context=context)
     elif request.method == 'POST':
