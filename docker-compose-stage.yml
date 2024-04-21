@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+ backend:
+  build: .
+  container_name: django
+  command: gunicorn config.wsgi --bind 0.0.0.0:8000
+  volumes:
+   - .:/core
+  ports:
+   - "8000:8000"
+  depends_on:
+   - redis
+
+ redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --save 60 1 --loglevel warning
+
+ worker1:
+    build: .
+    command: celery -A config worker -l INFO
+    volumes:
+      - .:/core
+    depends_on:
+      - redis
+      - backend
+

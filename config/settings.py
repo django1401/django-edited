@@ -20,6 +20,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Application definition
 SECRET_KEY = 'django-insecure-x3hca8q@6lavbm^&+2-@g*sr3z%=!ks1!*o8#^e^dxiw22yg^'
 DEBUG = True
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -209,3 +211,4 @@ CACHES = {
         }
     }
 }
+
