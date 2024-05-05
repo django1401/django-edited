@@ -35,6 +35,7 @@ jobs:
           host: ${{secrets.HOST}}
           port: ${{secrets.PORT}}
           script: 
+            ls
             cd ./Desktop/django-edited
             docker-compose -f docker-compose-stage.yml stop
             git pull
