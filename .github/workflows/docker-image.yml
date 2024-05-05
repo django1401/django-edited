@@ -8,10 +8,9 @@ on:
 
 jobs:
 
-  build:
-
+  Test:
     runs-on: ubuntu-latest
-
+    name: Test
     steps:
     - uses: actions/checkout@v3
     - name: Build Django project
@@ -20,3 +19,24 @@ jobs:
       run: docker exec django sh -c "python manage.py test ."
     - name: Pytest check
       run: docker exec django sh -c "pytest ./courses/api/V1/tests.py"
+      
+  Depoloy:
+    if: ${{ always() && contains(join(needs.*.resault, ','), 'success') }}
+    runs-on: ubuntu-latest
+    name: Deploy project
+    needs: Test
+    steps:
+      - uses: actions/checkout@v3
+      - name : execute command
+        uses: appleboy/ssh-action@master
+        with:
+          username: ${{secrets.USERNAME}}
+          password: ${{secrets.PASSWORD}}
+          host: ${{secrets.HOST}}
+          port: ${{secrets.PORT}}
+          script: 
+            cd ./Desktop/django-edited
+            docker-compose -f docker-compose-stage.yml stop
+            git pull
+            docker-compose -f docker-compose-stage.yml restart
+
