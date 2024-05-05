@@ -9,7 +9,6 @@ services:
    - .:/core
    - static_volume:/core/static
    - media_volume:/core/media
-
   expose:
    - "8000"
   depends_on:
