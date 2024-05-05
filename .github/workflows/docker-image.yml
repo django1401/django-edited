@@ -21,7 +21,7 @@ jobs:
       run: docker exec django sh -c "pytest ./courses/api/V1/tests.py"
       
   Depoloy:
-    if: ${{ always() && contains(join(needs.*.resault, ','), 'success') }}
+    if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
     runs-on: ubuntu-latest
     name: Deploy project
     needs: Test
