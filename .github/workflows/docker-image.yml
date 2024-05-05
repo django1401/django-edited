@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Test
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Build Django project
       run: docker-compose up -d 
     - name: Testcase
@@ -26,7 +26,7 @@ jobs:
     name: Deploy project
     needs: Test
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name : execute command
         uses: appleboy/ssh-action@master
         with:
